@@ -1,5 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { DepartmentEq, DepartmentEqSchema } from './departmentEq.schema';
+import { Type } from 'class-transformer';
+
+import { RoomsEqSchema, RoomsEq } from './roomsEq.schema';
+import { EquipmentsEq, EquipmentsEqSchema } from './equipmentsEq.schema';
 
 export type ProjectDocument = Project & Document;
 
@@ -39,6 +44,18 @@ export class Project {
 
   @Prop({ required: true })
   signature2: string;
+
+  @Prop({ type: [DepartmentEqSchema] })
+  @Type(() => DepartmentEq)
+  departmentEq: DepartmentEq[];
+
+  @Prop({ type: [EquipmentsEqSchema] })
+  @Type(() => EquipmentsEq)
+  equipmentsEq: EquipmentsEq[];
+
+  @Prop({ type: [RoomsEqSchema] })
+  @Type(() => RoomsEq)
+  roomsEq: RoomsEq[];
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

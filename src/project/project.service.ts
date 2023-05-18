@@ -7,8 +7,10 @@ import { Model, FilterQuery } from 'mongoose';
 
 @Injectable()
 export class ProjectService {
+  projectModel: any;
   constructor(
-    @InjectModel(Project.name) private readonly ProjectModel: Model<ProjectDocument>,
+    @InjectModel(Project.name)
+    private readonly ProjectModel: Model<ProjectDocument>,
   ) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<ProjectDocument> {
@@ -40,8 +42,7 @@ export class ProjectService {
     //   };
     // }
 
-    const findQuery = this.ProjectModel
-      .find(filters)
+    const findQuery = this.ProjectModel.find(filters)
       .sort({ _id: 1 })
       .skip(documentsToSkip);
 
@@ -69,4 +70,18 @@ export class ProjectService {
   async remove(id: string) {
     return this.ProjectModel.findByIdAndRemove(id);
   }
+
+  async addRooms(rooms) {
+    return this.ProjectModel.updateOne(
+      // { _id: Project },
+      { $push: { rooms: rooms } },
+    );
+  }
+
+  // async addDepartment(projectId: string, department: string): Promise<any> {
+  //   return this.ProjectModel.updateOne(
+  //     { _id: projectId },
+  //     { $push: { departmentEq: { name: department } } },
+  //   );
+  // }
 }
